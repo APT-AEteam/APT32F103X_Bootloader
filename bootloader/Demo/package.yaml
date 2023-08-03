@@ -1,0 +1,42 @@
+hw_info:
+  cpu_id: ""
+  cpu_name: e902
+  vendor_name: ""
+  chip_name: ""
+  board_name: ""
+  ld_script: ../board/gcc_flash.ld
+  flash_program: ""
+def_config:
+  CONFIG_ARCH_INTERRUPTSTACK: 2048
+  CONFIG_DEBUG_MODE: 1
+  CONFIG_KERNEL_NONE: 1
+  CONFIG_SUPPORT_TSPEND: 1
+name: Demo
+version: v0.0.1
+description: 我的第一个方案工程
+tag: ""
+keywords: 
+author:
+  name: ""
+license: ""
+type: solution
+depends:
+  - sdk_103x: v0.0.1
+build_config:
+  include:
+    - include
+    - ./
+    - src/include/
+  internal_include: 
+  cflag: -Os  -g  -Wall  -ffunction-sections  -fdata-sections
+  cxxflag: -Os  -g  -Wall  -ffunction-sections  -fdata-sections
+  asmflag: -Wa,--gdwarf2
+  define: 
+  libs: 
+  libpath: 
+source_file:
+  - src/*.c
+depends_forward:
+  - sdk_103x: v0.0.1
+install: 
+homepage: 

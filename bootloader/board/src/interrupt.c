@@ -23,6 +23,7 @@
 #include "ifc.h"
 #include "iic.h"
 #include "tkey.h"
+#include "bootloader.h"
 
 /* externs function--------------------------------------------------------*/
 extern void bt_irqhandler(csp_bt_t *ptBtBase);
@@ -160,7 +161,8 @@ void uart1_int_handler(void)
 {
 #if	UART1_INT_HANDLE_EN
     // ISR content ...
-	uart_irqhandler(UART1, 1);
+	//uart_irqhandler(UART1, 1);
+	bootloader_prog_irqhandler(UART1);
 
 #endif
 }
@@ -270,7 +272,8 @@ void bt0_int_handler(void)
 {
 #if	BT0_INT_HANDLE_EN
     // ISR content ...
-	bt_irqhandler(BT0);
+	//bt_irqhandler(BT0);
+	bootloader_bt_irqhandler(BT0);
 #endif
 }
 

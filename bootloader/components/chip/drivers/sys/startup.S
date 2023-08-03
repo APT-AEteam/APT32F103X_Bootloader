@@ -105,35 +105,35 @@ __Vectors:
     /* External interrupts */
     .long   Default_Handler			//16
     .long   syscon_int_handler
-    .long   ifc_int_handler
-    .long   adc0_int_handler
-    .long   ept0_int_handler
-    .long   dma_int_handler
-    .long   wwdt_int_handler
-    .long   exi0_int_handler
-    .long   exi1_int_handler			//24
-    .long   gpta0_int_handler
     .long   Default_Handler
     .long   Default_Handler
-    .long   rtc_int_handler
+    .long   Default_Handler
+    .long   Default_Handler
+    .long   Default_Handler
+    .long   Default_Handler
+    .long   Default_Handler			//24
+    .long   Default_Handler
+    .long   Default_Handler
+    .long   Default_Handler
+    .long   Default_Handler
     .long   uart0_int_handler
     .long   uart1_int_handler
     .long   uart2_int_handler			
-    .long   usart_int_handler			//32
-    .long   i2c_int_handler
+    .long   Default_Handler			//32
     .long   Default_Handler
-    .long   spi0_int_handler
-    .long   sio0_int_handler
-    .long   exi2_3_int_handler
-    .long   exi4_9_int_handler
-    .long   exi10_15_int_handler
-    .long   cnta_int_handler		//40
-    .long   tkey_int_handler
-    .long   lpt_int_handler			
+    .long   Default_Handler
+    .long   Default_Handler
+    .long   Default_Handler
+    .long   Default_Handler
+    .long   Default_Handler
+    .long   Default_Handler
+    .long   Default_Handler		//40
+    .long   Default_Handler
+    .long   Default_Handler			
     .long   Default_Handler
     .long   bt0_int_handler
-    .long   bt1_int_handler
-    .long   bt2_int_handler
+    .long   Default_Handler
+    .long   Default_Handler
     .long   bt3_int_handler
 //	.long   Default_Handler			//48
 //    .long   Default_Handler
