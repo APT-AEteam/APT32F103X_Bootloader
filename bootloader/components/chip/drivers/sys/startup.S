@@ -116,9 +116,9 @@ __Vectors:
     .long   Default_Handler
     .long   Default_Handler
     .long   Default_Handler
-    .long   uart0_int_handler
+    .long   Default_Handler
     .long   uart1_int_handler
-    .long   uart2_int_handler			
+    .long   Default_Handler			
     .long   Default_Handler			//32
     .long   Default_Handler
     .long   Default_Handler
@@ -134,7 +134,7 @@ __Vectors:
     .long   bt0_int_handler
     .long   Default_Handler
     .long   Default_Handler
-    .long   bt3_int_handler
+    .long   Default_Handler
 //	.long   Default_Handler			//48
 //    .long   Default_Handler
 //    .long   Default_Handler

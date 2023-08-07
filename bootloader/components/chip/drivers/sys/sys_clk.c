@@ -136,6 +136,23 @@ csi_error_t csi_sysclk_config(csi_clk_config_t tClkCfg)
 	return ret;
 }
 
+csi_error_t csi_bootloader_sysclk_config(void)
+{	
+	csi_error_t ret = CSI_OK;
+	uint8_t byFlashLp = 0;
+
+	ret = csi_hfosc_enable(0);
+	IFC->CEDR = IFC_CLKEN;
+	IFC->MR = HIGH_SPEED | PF_WAIT2;
+
+	csp_set_sdiv(SYSCON, 1);
+	csp_set_clksrc(SYSCON, SRC_HFOSC);
+	csp_eflash_lpmd_enable(SYSCON, (bool)byFlashLp);
+	csp_set_pdiv(SYSCON, PCLK_DIV1);
+
+	return ret;
+}
+
 /** \brief Clock output configuration
  * 
  *  \param[in] eCloSrc: source to output
@@ -280,6 +297,7 @@ csi_error_t csi_calc_clk_freq(void)
 	
 	return CSI_OK;
 }
+
 
 /** \brief To get SCLK frequence 
  *  \param[in] none.
