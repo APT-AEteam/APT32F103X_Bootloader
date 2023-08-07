@@ -69,9 +69,10 @@ SECTIONS {
     { 
 		. = ALIGN(0x4) ;						/* Align the start of the section */
 		_start_data = .;						/* Provide the name for the start of this section */
+/*		
 		KEEP(*csp.o(.data.*))					/* keep keyword to prevent it from being optimized */
 		KEEP(*csp.o(.data))
-		
+*/		
     	*( .data );
 		*( .data.* );
 		
