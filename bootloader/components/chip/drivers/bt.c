@@ -60,17 +60,20 @@ __attribute__((weak)) void bt_irqhandler(csp_bt_t *ptBtBase)
 csi_error_t csi_bt_timer_init(csp_bt_t *ptBtBase, uint32_t wTimeOut)
 {
 	uint32_t wTmLoad;
-	uint32_t wClkDiv;
+	uint32_t wClkDiv = 1;
 	
 	if(0 == wTimeOut)
 		return CSI_ERROR;
 	
-	csi_clk_enable(ptBtBase);													//bt clk enable
+	//csi_clk_enable(ptBtBase);													//bt clk enable
+	soc_clk_enable(BT0_SYS_CLK);
 	csp_bt_soft_rst(ptBtBase);													//reset bt
 	
-	apt_timer_set_load_value(wTimeOut);
-	wTmLoad = apt_timer_get_prdrload_value();
-	wClkDiv = apt_timer_get_clkdiv_value();
+	wTmLoad = 48 * wTimeOut;	//bt prdr load value
+	if(wTmLoad > 0xffff)
+	{
+		return CSI_ERROR;
+	}
 		
 	csp_bt_set_cr(ptBtBase, (BT_IMMEDIATE << BT_SHDW_POS) | (BT_CONTINUOUS << BT_OPM_POS) |		//bt work mode
 			(BT_PCLKDIV << BT_EXTCKM_POS) | (BT_CNTRLD_EN << BT_CNTRLD_POS) | BT_CLK_EN);
@@ -78,7 +81,8 @@ csi_error_t csi_bt_timer_init(csp_bt_t *ptBtBase, uint32_t wTimeOut)
 	csp_bt_set_prdr(ptBtBase, (uint16_t)wTmLoad);							//bt prdr load value
 	csp_bt_set_cmp(ptBtBase, (uint16_t)(wTmLoad >> 1));						//bt prdr load value
 	csp_bt_int_enable(ptBtBase, BT_PEND_INT);								//enable PEND interrupt
-	csi_irq_enable(ptBtBase);												//enable bt vic interrupt
+	//csi_irq_enable(ptBtBase);												//enable bt vic interrupt
+	csi_vic_enable_irq(BT0_IRQ_NUM);
 	
     return CSI_OK;
 }

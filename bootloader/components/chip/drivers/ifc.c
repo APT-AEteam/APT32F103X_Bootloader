@@ -92,9 +92,6 @@ csi_error_t csi_ifc_read(csp_ifc_t *ptIfcBase, uint32_t wAddr, uint32_t *wData, 
 	{
 		return CSI_ERROR;
 	}	
-	else if (((wAddr < DFLASHBASE) && ((wAddr + wDataNum)>PFLASHLIMIT) )|| ((wAddr>=DFLASHBASE)&& ((wAddr + wDataNum)> DFLASHLIMIT))) {
-		return CSI_ERROR;
-	}
 	
 	csp_ifc_clk_enable(ptIfcBase, ENABLE);
 	
@@ -241,14 +238,7 @@ csi_error_t csi_ifc_program(csp_ifc_t *ptIfcBase, uint32_t wAddr, uint32_t *pwDa
 	uint32_t i, wFullPageNum, wLen0,wLen1, wPageSize, wFlashType,wOffset;
 	
 	//return error when address is not word alligned, or addr goes beyond DFLASH space
-	if (wAddr % 4 != 0 )
-	{
-		return CSI_ERROR;
-	}	
-	else if (((wAddr < DFLASHBASE) && ((wAddr + (wDataWordNum<<2))>PFLASHLIMIT) )|| ((wAddr>=DFLASHBASE)&& ((wAddr + (wDataWordNum<<2))> DFLASHLIMIT))) {
-		return CSI_ERROR;
-	}
-	
+
 	csp_ifc_clk_enable(ptIfcBase, ENABLE);
 	
 	/*if (wDataNum%4 == 0)
@@ -256,16 +246,10 @@ csi_error_t csi_ifc_program(csp_ifc_t *ptIfcBase, uint32_t wAddr, uint32_t *pwDa
 	else
 		wDataNum = wDataNum/4 + 1;*/
 	
-	if (wAddr<PFLASHLIMIT){
 		wPageSize = PFLASH_PAGE_SZ;
 		wFlashType = PFLASH;
 		wOffset = wAddr >> 2;
-	}
-	else {
-		wPageSize = DFLASH_PAGE_SZ;
-		wFlashType = DFLASH;
-		wOffset = (wAddr - DFLASHBASE)>>2;
-	}
+
 		
 	if (wDataWordNum > (wPageSize-wOffset%wPageSize)){
 			wLen0 = wPageSize-wOffset%wPageSize;
@@ -405,21 +389,15 @@ void apt_ifc_step_async(csp_ifc_t * ptIfcBase, ifc_cmd_e eStepn, uint32_t wPageS
 static csp_error_t apt_ifc_wr_nword(csp_ifc_t * ptIfcBase, uint8_t bFlashType, uint32_t wAddr, uint32_t wDataNum, uint32_t *pwData)
 {
 	uint32_t i, j, wPageStAddr, wBuff[PFLASH_PAGE_SZ];
-	uint8_t bPageSize = DFLASH_PAGE_SZ;
+	uint8_t bPageSize = PFLASH_PAGE_SZ;
 	csp_error_t tRet = CSP_SUCCESS;
 	
 	csi_ifc_get_status(IFC);
 	while(!g_bFlashPgmDne);
 	g_bFlashPgmDne = 0;
 	
-	if (bFlashType == PFLASH) {
-		bPageSize = PFLASH_PAGE_SZ;
-		wPageStAddr = wAddr & 0xffffff00;
-	}
-	else {
-		bPageSize = DFLASH_PAGE_SZ;
-		wPageStAddr = wAddr & 0xffffffc0;
-	}
+	wPageStAddr = wAddr & 0xffffff00;
+
 	
 	wAddr -= wPageStAddr;
 	wAddr = wAddr >> 2;
@@ -449,35 +427,23 @@ static csp_error_t apt_ifc_wr_nword(csp_ifc_t * ptIfcBase, uint8_t bFlashType, u
 	///step4
 	apt_ifc_step_sync(ptIfcBase, PROGRAM, wPageStAddr);
 
-	if (bFlashType == DFLASH && csp_ifc_get_dflash_paramode(ptIfcBase) == 1)
+///step5
+	apt_ifc_step_sync(ptIfcBase, PAGE_ERASE, wPageStAddr);
+///step6
+	apt_ifc_step_sync(ptIfcBase, PROGRAM, wPageStAddr);
+///whole page check
+	for (i=0; i<bPageSize; i++)
 	{
-		///DFLASH step4 
-		for (i=0; i< DFLASH_PAGE_SZ;i++)
-		{
-			wBuffForCheck[i] = wBuff[i];
-		}
-		g_wPageStAddr = wPageStAddr;
-		apt_ifc_step_async(ptIfcBase, PAGE_ERASE, wPageStAddr);
-	}
-	else 
-	{
-	///step5
-		apt_ifc_step_sync(ptIfcBase, PAGE_ERASE, wPageStAddr);
-	///step6
-		apt_ifc_step_sync(ptIfcBase, PROGRAM, wPageStAddr);
-	///whole page check
-		for (i=0; i<bPageSize; i++)
-		{
-			if (*(uint32_t *)(wPageStAddr+4*i) != wBuff[i]){
-				tRet = CSP_FAIL;
-				g_bFlashCheckPass = 0;
-				g_bFlashPgmDne = 1;
-				return tRet;
-			}
-		}
-		if (tRet != CSP_FAIL)
+		if (*(uint32_t *)(wPageStAddr+4*i) != wBuff[i]){
+			tRet = CSP_FAIL;
+			g_bFlashCheckPass = 0;
 			g_bFlashPgmDne = 1;
+			return tRet;
+		}
 	}
+	if (tRet != CSP_FAIL)
+		g_bFlashPgmDne = 1;
+
 	return tRet;
 }
 

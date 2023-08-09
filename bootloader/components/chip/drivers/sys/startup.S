@@ -92,7 +92,7 @@ __Vectors:
     .long   Default_Handler
     .long   Default_Handler
     .long   Default_Handler
-    .long   coret_int_handler     // Timer int of Machine mode --- 07
+    .long   Default_Handler     // Timer int of Machine mode --- 07
     .long   Default_Handler
     .long   Default_Handler
     .long   Default_Handler
@@ -104,7 +104,7 @@ __Vectors:
 
     /* External interrupts */
     .long   Default_Handler			//16
-    .long   syscon_int_handler
+    .long   Default_Handler
     .long   Default_Handler
     .long   Default_Handler
     .long   Default_Handler
