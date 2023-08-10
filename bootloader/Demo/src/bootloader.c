@@ -25,7 +25,7 @@
 #include "bootloader.h"
 
 uint8_t byProgFailed =0;
-uint8_t  byRwBuffer[BOOT_BUF_SIZE];
+uint8_t  byRwBuffer[BOOT_BUF_SIZE] = {0};
 
 volatile uint32_t wImageSize =0;
 volatile uint32_t wIndx =0;
@@ -354,7 +354,7 @@ uint32_t bootloader_get_cmd_value(void)
 void bootloader_program_init(void)
 {
 	hwCheckTimeOutNum = 80;           //bootloader_prog_check_us()/BT_INT_TIMER_US;
-	memset(byRwBuffer,0,BOOT_BUF_SIZE);
+	//memset(byRwBuffer,0,BOOT_BUF_SIZE);
 	//csi_iwdt_init(IWDT_TO_4096);			//初始化看门狗，溢出时间为2000ms(系统复位时间)
 	csp_iwdt_set_ovt(SYSCON, IWDT_TO_4096);
 	csp_iwdt_clr(SYSCON);
@@ -395,10 +395,10 @@ int bootloader_program_loading(void)
 				{
 					byProgStart = 1;
 				}
-				else 
-				{
-					bootloader_send_back_str("err0\n",5);	
-				}
+//				else 
+//				{
+//					bootloader_send_back_str("err0\n",5);	
+//				}
 				bootloader_send_ack(byCmdAck,4);
 				boot_mdelay(1);
 				byCmdId = 0;
@@ -409,10 +409,10 @@ int bootloader_program_loading(void)
 					wHexStartAddr = bootloader_get_cmd_value();
 					bootloader_send_ack(byCmdAck,4);
 				}
-				if(wHexStartAddr != APP_START_ADDR)
-				{
-					bootloader_send_back_str("err1\n",5);	
-				}
+//				if(wHexStartAddr != APP_START_ADDR)
+//				{
+//					bootloader_send_back_str("err1\n",5);	
+//				}
 				boot_mdelay(1);
 				byCmdId = 0;
 			break;
@@ -422,10 +422,10 @@ int bootloader_program_loading(void)
 					wHexEndAddr = bootloader_get_cmd_value();
 					bootloader_send_ack(byCmdAck,4);
 				}
-				if(wHexEndAddr <= APP_START_ADDR)
-				{
-					bootloader_send_back_str("err2\n",5);	
-				}
+//				if(wHexEndAddr <= APP_START_ADDR)
+//				{
+//					bootloader_send_back_str("err2\n",5);	
+//				}
 				boot_mdelay(1);
 				byCmdId = 0;
 			
@@ -492,6 +492,7 @@ int bootloader_program_loading(void)
 void bootloader_jump_to_app(void)
 {
 	asm("mv t2,%0\n"::"r"(APP_START_ADDR):);
+	//asm(" li t2,0x2000");
 	asm(" jalr t2 ");
 }
 
@@ -513,12 +514,12 @@ int bootloader_jump_function(void)
 {
 	boot_mdelay(200);
 	if(byProgFailed ==1 || bootloader_check_jump_addr() == 0){
-		bootloader_send_back_str("BtFail\n",7);
+		bootloader_send_back_str("Fail\n",5);
 		return BOOT_ERROR;
 	}
 	bootloader_send_back_str("JumpAPP\n",8);
 	boot_mdelay(100);
-//	csi_bt_stop(BT0);
+	csi_bt_stop(BT0);
 	bootloader_jump_to_app();
 	return JUMP_SUCCESS;	
 }

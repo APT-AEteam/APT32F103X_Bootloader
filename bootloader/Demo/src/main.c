@@ -57,7 +57,7 @@ int main()
 				else bootloader_reset();
 				break;
 			default:
-				bootloader_reset();
+			//	bootloader_reset();
 				break;
 		}	
 	}
