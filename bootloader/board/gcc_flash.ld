@@ -22,7 +22,7 @@
  ******************************************************************************/
 MEMORY
 {
-	ROM(RX)   : ORIGIN = 0x00000000,  LENGTH = 80K
+	ROM(RX)   : ORIGIN = 0x00000000,  LENGTH = 4K
 	ROM1(RX)  : ORIGIN = 0x10000000,  LENGTH = 4K
 	RAM(RWX)  : ORIGIN = 0x20000000,  LENGTH = 8K
 }
