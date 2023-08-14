@@ -331,10 +331,6 @@ uint8_t bootloader_program_option(void)
 		bootloader_prog_init();
 		bootopt = BOOTLOADER_MODE;	
 	}
-
-//	bootloader_prog_init();
-//	bootopt = BOOTLOADER_MODE;	
-	
 	return bootopt;	
 }
 
@@ -501,7 +497,7 @@ uint8_t bootloader_check_jump_addr()
 	uint32_t wTemp;
 	uint8_t byResult = 0;
 	wTemp = bootloader_flash_read_word(APP_START_ADDR);
-	if(wTemp == APP_EIP_ADDR )byResult = 1;
+	if(wTemp == APP_EIP_VALUE )byResult = 1;
 	return byResult;
 }
 

@@ -19,7 +19,8 @@
 #define PRINT_ENABLE           
 
 #define APP_START_ADDR         0x1000ul        //0xFE0ul
-#define APP_EIP_ADDR           0x517ul
+#define APP_EIP_ADDR           0x1000ul
+#define APP_EIP_VALUE          0x517ul
 #define ROM_END_ADDR           0xffff //如果使用了dataflash功能，注意修改这个参数
 
 #define BOOTLOADER_PRINT_BORD  115200
