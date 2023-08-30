@@ -9,8 +9,8 @@ WorkspacePath          :=./
 ProjectPath            :=./
 IntermediateDirectory  :=Obj
 OutDir                 :=$(IntermediateDirectory)
-User                   :=yuanym
-Date                   :=03/08/2023
+User                   :=luhy
+Date                   :=30/08/2023
 CDKPath                :=D:/C-Sky/CDK
 ToolchainPath          :=D:/C-Sky/CDKRepo/Toolchain/XTGccElfNewlib/V2.6.1/R/
 LinkerName             :=riscv64-unknown-elf-gcc
@@ -43,11 +43,10 @@ OutputFile             :=$(ProjectName)
 ObjectSwitch           :=-o 
 ArchiveOutputSwitch    := 
 PreprocessOnlySwitch   :=-E
-PreprocessOnlyDisableLineSwitch   :=-P
 ObjectsFileList        :=Demo.txt
 MakeDirCommand         :=mkdir
-LinkOptions            :=   --specs=nosys.specs  -nostartfiles  -Wl,--gc-sections  -T../board/gcc_flash.ld  -mabi=ilp32e -mtune=e902 -march=rv32ecxtheadse 
-LinkOtherFlagsOption   :=   -Wl,-Map=$(ProjectPath)/Lst/$(OutputFile).map 
+LinkOptions            :=   -nostartfiles  -Wl,--gc-sections  -T../board/gcc_flash.ld  -mabi=ilp32e -mtune=e902 -march=rv32ecxtheadse 
+LinkOtherFlagsOption   :=   
 IncludePackagePath     :=
 IncludeCPath           :=$(IncludeSwitch)../components/chip/include $(IncludeSwitch)../components/chip/drivers/sys $(IncludeSwitch)../board/include $(IncludeSwitch)../components/console/include $(IncludeSwitch)../components/csi/include $(IncludeSwitch)../components/csi/include/core $(IncludeSwitch)../components/csi/include/drv  $(IncludeSwitch)include $(IncludeSwitch). $(IncludeSwitch)src/include/  
 IncludeAPath           :=$(IncludeSwitch)../components/chip/include $(IncludeSwitch)../components/chip/drivers/sys $(IncludeSwitch)../board/include $(IncludeSwitch)../components/console/include $(IncludeSwitch)../components/csi/include $(IncludeSwitch)../components/csi/include/core $(IncludeSwitch)../components/csi/include/drv  $(IncludeSwitch)include $(IncludeSwitch). $(IncludeSwitch)src/include/  
@@ -68,8 +67,7 @@ OBJDUMP  :=riscv64-unknown-elf-objdump
 OBJCOPY  :=riscv64-unknown-elf-objcopy
 CXXFLAGS := $(PreprocessorSwitch)USE_APT32F103X_CHIP $(PreprocessorSwitch)USE_APT32F103X_EVB $(PreprocessorSwitch)USE_APT_CONSOLE $(PreprocessorSwitch)USE_APT_CSI $(PreprocessorSwitch)USE_SDK_103X  -O1  -g3  -Wall  -ffunction-sections -Wno-unused-function -Og  -g  -Wall  -ffunction-sections -nostdlib -Wpointer-arith -Wl,-EL -fdata-sections -fdata-sections -g $(PreprocessorSwitch)CONFIG_ARCH_INTERRUPTSTACK=2048 $(PreprocessorSwitch)CONFIG_DEBUG_MODE=1 $(PreprocessorSwitch)CONFIG_KERNEL_NONE=1 $(PreprocessorSwitch)CONFIG_SUPPORT_TSPEND=1   -mabi=ilp32e -mtune=e902 -march=rv32ecxtheadse   -Os  -g  -Wall  -ffunction-sections  -fdata-sections 
 CFLAGS   := $(PreprocessorSwitch)USE_APT32F103X_CHIP $(PreprocessorSwitch)USE_APT32F103X_EVB $(PreprocessorSwitch)USE_APT_CONSOLE $(PreprocessorSwitch)USE_APT_CSI $(PreprocessorSwitch)USE_SDK_103X  -O1  -g3  -Wall  -ffunction-sections -Wno-unused-function -Og  -g  -Wall  -ffunction-sections -nostdlib -Wpointer-arith -Wl,-EL -fdata-sections -fdata-sections -g $(PreprocessorSwitch)CONFIG_ARCH_INTERRUPTSTACK=2048 $(PreprocessorSwitch)CONFIG_DEBUG_MODE=1 $(PreprocessorSwitch)CONFIG_KERNEL_NONE=1 $(PreprocessorSwitch)CONFIG_SUPPORT_TSPEND=1   -mabi=ilp32e -mtune=e902 -march=rv32ecxtheadse   -Os  -g  -Wall  -ffunction-sections  -fdata-sections 
-ASFLAGS  := $(PreprocessorSwitch)USE_APT32F103X_CHIP $(PreprocessorSwitch)USE_APT32F103X_EVB $(PreprocessorSwitch)USE_APT_CONSOLE $(PreprocessorSwitch)USE_APT_CSI $(PreprocessorSwitch)USE_SDK_103X  -Wa,-gdwarf-2 -Wa,-gdwarf-2 $(PreprocessorSwitch)CONFIG_ARCH_INTERRUPTSTACK=2048 $(PreprocessorSwitch)CONFIG_DEBUG_MODE=1 $(PreprocessorSwitch)CONFIG_KERNEL_NONE=1 $(PreprocessorSwitch)CONFIG_SUPPORT_TSPEND=1   -mabi=ilp32e -mtune=e902 -march=rv32ecxtheadse   -Wa,-gdwarf-2 
-PreprocessFlags  := $(PreprocessorSwitch)USE_APT32F103X_CHIP $(PreprocessorSwitch)USE_APT32F103X_EVB $(PreprocessorSwitch)USE_APT_CONSOLE $(PreprocessorSwitch)USE_APT_CSI $(PreprocessorSwitch)USE_SDK_103X  -O1     -Wall  -ffunction-sections -Wno-unused-function -Og  -g  -Wall  -ffunction-sections -nostdlib -Wpointer-arith -Wl,-EL -fdata-sections -fdata-sections -g $(PreprocessorSwitch)CONFIG_ARCH_INTERRUPTSTACK=2048 $(PreprocessorSwitch)CONFIG_DEBUG_MODE=1 $(PreprocessorSwitch)CONFIG_KERNEL_NONE=1 $(PreprocessorSwitch)CONFIG_SUPPORT_TSPEND=1   -mabi=ilp32e -mtune=e902 -march=rv32ecxtheadse   -Os  -g  -Wall  -ffunction-sections  -fdata-sections 
+ASFLAGS  := $(PreprocessorSwitch)USE_APT32F103X_CHIP $(PreprocessorSwitch)USE_APT32F103X_EVB $(PreprocessorSwitch)USE_APT_CONSOLE $(PreprocessorSwitch)USE_APT_CSI $(PreprocessorSwitch)USE_SDK_103X  -Wa,--gdwarf2 -Wa,--gdwarf2 $(PreprocessorSwitch)CONFIG_ARCH_INTERRUPTSTACK=2048 $(PreprocessorSwitch)CONFIG_DEBUG_MODE=1 $(PreprocessorSwitch)CONFIG_KERNEL_NONE=1 $(PreprocessorSwitch)CONFIG_SUPPORT_TSPEND=1   -mabi=ilp32e -mtune=e902 -march=rv32ecxtheadse   -Wa,--gdwarf2 
 
 
 Objects0=$(IntermediateDirectory)/src_bootloader$(ObjectSuffix) $(IntermediateDirectory)/src_main$(ObjectSuffix) 
@@ -93,7 +91,7 @@ $(IntermediateDirectory)/$(OutputFile):  $(Objects) Always_Link
 	@$(SIZE) $(ProjectPath)$(IntermediateDirectory)/$(OutputFile)$(ExeSuffix) 
 	@echo -n checksum value of target:  
 	@$(CHECKSUM) $(ProjectPath)/$(IntermediateDirectory)/$(OutputFile)$(ExeSuffix) 
-	@Demo.modify.bat $(IntermediateDirectory) $(OutputFile)$(ExeSuffix) 
+	@$(ProjectName).modify.bat $(IntermediateDirectory) $(OutputFile)$(ExeSuffix) 
 
 Always_Link:
 
